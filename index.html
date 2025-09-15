@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome — Tu Education Point</title>
+
+  <style>
+    /* Basic reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+
+    /* Page background */
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(ellipse at 20% 10%, #0f172a 0%, #020617 30%, #000 100%);
+      color:#fff;
+      min-height:100vh;
+      overflow:hidden;
+    }
+
+    /* Fullscreen welcome overlay */
+    #welcome {
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(58,12,163,0.15), transparent 10%),
+        radial-gradient(circle at 90% 80%, rgba(14,165,233,0.08), transparent 12%),
+        rgba(0,0,0,0.35);
+      backdrop-filter: blur(2px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    /* hide state */
+    #welcome.hide {
+      opacity:0;
+      transform: scale(1.02);
+      pointer-events:none;
+    }
+
+    .neon-wrap{
+      text-align:center;
+      padding:40px;
+      border-radius:16px;
+      transform: translateZ(0);
+    }
+
+    /* Neon text */
+    .neon {
+      font-size: clamp(28px, 7vw, 72px);
+      letter-spacing: 0.02em;
+      line-height:1;
+      font-weight:800;
+      color: #fff;
+      text-transform: none;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.02);
+      /* multiple layered glows for neon effect */
+      text-shadow:
+        0 0 2px rgba(255,255,255,0.9),
+        0 0 8px rgba(139,92,246,0.9),
+        0 0 20px rgba(139,92,246,0.8),
+        0 0 30px rgba(99,102,241,0.6),
+        0 0 60px rgba(99,102,241,0.4);
+      display:inline-block;
+      transform: translateZ(0);
+      animation: glow 2.6s ease-in-out infinite alternate;
+    }
+
+    /* subtle flicker to feel alive */
+    @keyframes glow {
+      0%{ text-shadow:
+            0 0 1px rgba(255,255,255,0.9),
+            0 0 6px rgba(236,72,153,0.9),
+            0 0 14px rgba(236,72,153,0.8),
+            0 0 24px rgba(168,85,247,0.6),
+            0 0 50px rgba(99,102,241,0.35);}
+      50%{ text-shadow:
+            0 0 2px rgba(255,255,255,0.95),
+            0 0 8px rgba(99,102,241,0.95),
+            0 0 18px rgba(139,92,246,0.9),
+            0 0 28px rgba(139,92,246,0.6),
+            0 0 70px rgba(99,102,241,0.45);}
+      100%{ text-shadow:
+            0 0 1px rgba(255,255,255,0.8),
+            0 0 5px rgba(236,72,153,0.85),
+            0 0 12px rgba(236,72,153,0.75),
+            0 0 22px rgba(168,85,247,0.6),
+            0 0 40px rgba(99,102,241,0.3);}
+    }
+
+    /* small subtitle */
+    .sub {
+      margin-top:14px;
+      font-size: clamp(12px, 2.6vw, 18px);
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 0 6px rgba(99,102,241,0.12);
+      opacity:0.95;
+    }
+
+    /* continue button */
+    .enter-btn{
+      margin-top:22px;
+      display:inline-block;
+      padding:10px 18px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(139,92,246,0.15), rgba(14,165,233,0.12));
+      border: 1px solid rgba(255,255,255,0.08);
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 6px 18px rgba(14,165,233,0.06);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .enter-btn:active{ transform: translateY(1px) scale(.998) }
+
+    /* main page content (hidden under overlay) */
+    main {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      text-align:center;
+    }
+    .content-card{
+      max-width:900px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:28px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+      color: #cbd5e1;
+    }
+
+    /* Respect prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce){
+      .neon, #welcome { animation: none !important; transition: none !important; }
+    }
+
+    /* small screens adjustments */
+    @media (max-width:420px){
+      .neon { font-weight:700; }
+      .enter-btn { padding:9px 14px; font-size:14px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Welcome overlay -->
+  <div id="welcome" role="dialog" aria-live="polite" aria-label="Welcome overlay.">
+    <div class="neon-wrap" onclick="dismissWelcome()" title="Click to continue">
+      <div class="neon" aria-hidden="true">Welcome <span style="display:inline-block;color:transparent;background:linear-gradient(90deg,#f472b6,#7c3aed);-webkit-background-clip:text;background-clip:text">tu education point</span></div>
+      <div class="sub">Education • Notes • Practice — Aapka swagat hai</div>
+      <div>
+        <button class="enter-btn" onclick="dismissWelcome()">Enter site</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content (under the overlay) -->
+  <main>
+    <div class="content-card">
+      <h2 style="color:#fff;margin-bottom:14px">Tu Education Point — Main Page</h2>
+      <p>Yeh demo page hai. Welcome overlay 4 seconds me automatically gaayab ho jayega. Aap timing, colors, aur animation easily change kar sakte ho.</p>
+    </div>
+  </main>
+
+  <script>
+    // Remove overlay after timeout (4000ms)
+    const welcome = document.getElementById('welcome');
+    let hideTimeout = setTimeout(() => {
+      welcome.classList.add('hide');
+      // remove from DOM a little later to free space
+      setTimeout(() => welcome.remove(), 800);
+    }, 4000);
+
+    // Allow dismiss on click or button press
+    function dismissWelcome(e){
+      clearTimeout(hideTimeout);
+      if (!welcome) return;
+      welcome.classList.add('hide');
+      setTimeout(()=> welcome.remove(), 600);
+      if (e) e.stopPropagation && e.stopPropagation();
+    }
+
+    // keyboard accessibility: Enter/Escape to close
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape' || ev.key === 'Enter') dismissWelcome();
+    });
+  </script>
+</body>
+</html>
